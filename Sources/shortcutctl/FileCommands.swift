@@ -39,7 +39,7 @@ struct Build: ParsableCommand {
         discussion:
             "Unsigned output is the default. --sign anyone may send a copy to Apple for validation. people-who-know-me may include contact information. Signing is not import or execution."
     )
-    @Argument(help: "Source project JSON or unsigned workflow file.") var source: String
+    @Argument(help: "Source project JSON, plist, or signed AEA1 workflow.") var source: String
     @Option(name: [.short, .long], help: "Output .shortcut path. Use the intended import name as its basename.")
     var output: String
     @Option(help: "Property-list encoding: xml or binary. Fractional dates require binary.") var format: BuildFormat =
@@ -81,7 +81,7 @@ struct Build: ParsableCommand {
 struct Inspect: ParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "Inspect all actions, parameters, metadata, and structural diagnostics.")
-    @Argument(help: "Project JSON or unsigned XML/binary workflow. Signed archives are unsupported.") var source: String
+    @Argument(help: "Project JSON, XML/binary plist, or signed AEA1 workflow.") var source: String
     @OptionGroup var output: OutputOptions
 
     mutating func run() throws {
@@ -101,11 +101,11 @@ struct Inspect: ParsableCommand {
 
 struct Decompile: ParsableCommand {
     static let configuration = CommandConfiguration(
-        abstract: "Convert an unsigned workflow to loss-preserving project JSON.",
+        abstract: "Convert a workflow or signed AEA1 container to loss-preserving project JSON.",
         discussion:
-            "Signed AEA1 archives are not decoded. Retain the original unsigned workflow. This version emits JSON, not Swift source."
+            "Signed, unencrypted AEA1 profile 0 is decoded with AppleArchive. Embedded-key integrity does not establish certificate trust or shortcut safety. Output is JSON, not Swift source."
     )
-    @Argument(help: "Project JSON or unsigned XML/binary workflow.") var source: String
+    @Argument(help: "Project JSON, XML/binary plist, or signed AEA1 workflow.") var source: String
     @Option(name: [.short, .long], help: "Write project JSON here; omit to print it.") var output: String?
     @OptionGroup var presentation: OutputOptions
     @OptionGroup var write: WriteOptions
@@ -134,7 +134,7 @@ struct Lint: ParsableCommand {
         discussion:
             "Unknown actions are preserved and produce warnings. Passing lint does not establish that an action exists or runs on this device."
     )
-    @Argument(help: "Project JSON or unsigned workflow.") var source: String
+    @Argument(help: "Project JSON, plist, or signed AEA1 workflow.") var source: String
     @Flag(help: "Return validation failure for warnings too.") var strict = false
     @OptionGroup var output: OutputOptions
 

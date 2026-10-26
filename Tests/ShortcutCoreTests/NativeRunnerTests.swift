@@ -108,3 +108,49 @@ private func withExecutable(_ body: String, test: (ShortcutRunner, URL) throws -
         try SafeFiles.write(Data(), to: directory.appendingPathComponent("missing/output"), overwrite: false)
     }
 }
+
+@Test func nativeDiscoveryAndViewUseBoundedLiteralArguments() throws {
+    try withExecutable("printf '%s\\n' \"$@\"\n") { runner, _ in
+        let listing = try runner.list(folder: "中文 $(echo unsafe)", timeout: 2)
+        #expect(
+            String(decoding: listing, as: UTF8.self) == "list\n--show-identifiers\n--folder-name\n中文 $(echo unsafe)\n")
+        let folders = try runner.list(folders: true, timeout: 2)
+        #expect(String(decoding: folders, as: UTF8.self) == "list\n--folders\n")
+        try runner.view("literal $(echo unsafe)", timeout: 2)
+        #expect(throws: ToolFailure.self) { try runner.list(folder: "-invalid", timeout: 2) }
+        #expect(throws: ToolFailure.self) { try runner.list(folder: "filter", folders: true, timeout: 2) }
+        try runner.view("-literal", timeout: 2)
+        #expect(throws: ToolFailure.self) { try runner.view("", timeout: 2) }
+    }
+    try withExecutable("exit 9\n") { runner, _ in
+        #expect(throws: ToolFailure.self) { try runner.list(timeout: 2) }
+        #expect(throws: ToolFailure.self) { try runner.view("fixture", timeout: 2) }
+    }
+}
+
+@Test func nativeViewResolvesIdentifiersAndRejectsAmbiguousNames() throws {
+    let identifier = "00000000-0000-4000-8000-000000000001"
+    try withExecutable(
+        #"""
+        if [ "$1" = list ]; then
+            printf 'Synthetic (00000000-0000-4000-8000-000000000001)\n'
+        else
+            [ "$1" = view ] && [ "$2" = -- ] && [ "$3" = Synthetic ] || exit 8
+        fi
+
+        """#
+    ) { runner, _ in
+        try runner.view(identifier, timeout: 2)
+    }
+    try withExecutable(
+        #"""
+        printf 'Same (00000000-0000-4000-8000-000000000001)\nSame (00000000-0000-4000-8000-000000000002)\n'
+
+        """#
+    ) { runner, _ in
+        do {
+            try runner.view(identifier, timeout: 2)
+            Issue.record("Expected ambiguous name")
+        } catch let error as ToolFailure { #expect(error.code == "ambiguous_shortcut") }
+    }
+}

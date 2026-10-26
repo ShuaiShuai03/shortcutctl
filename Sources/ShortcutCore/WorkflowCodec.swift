@@ -87,12 +87,8 @@ public enum WorkflowCodec {
 
     public static func decodeWorkflow(_ data: Data, name: String) throws -> WorkflowProject {
         if data.starts(with: Data("AEA1".utf8)) {
-            throw ToolFailure(
-                "signed_container_unsupported", "Signed AEA1 archives cannot be decompiled by this version.",
-                "此版本无法反编译已签名的 AEA1 文件。",
-                hint:
-                    "Use the original unsigned XML/binary workflow or source project. Apple provides no shortcuts sign --unsign command.",
-                exitCode: 4)
+            let payload = try SignedContainer.decode(data)
+            return try decodeWorkflow(payload, name: name)
         }
         let payload = data.starts(with: [0xEF, 0xBB, 0xBF]) ? data.dropFirst(3) : data[...]
         let leading = payload.drop(while: { [9, 10, 13, 32].contains($0) }).first
@@ -108,9 +104,10 @@ public enum WorkflowCodec {
             return WorkflowProject(name: workflow["WFWorkflowName"]?.string ?? name, workflow: workflow)
         } catch let error as ToolFailure { throw error } catch {
             throw ToolFailure(
-                "unsupported_workflow", "Input is not a readable unsigned XML/binary workflow or project JSON.",
-                "输入不是可读取的未签名 XML、二进制工作流或项目 JSON。",
-                hint: "Signed and encrypted archives are unsupported; retain the unsigned source when building.",
+                "unsupported_workflow",
+                "Input is not a readable workflow plist, signed AEA1 container, or project JSON.",
+                "输入不是可读取的工作流属性列表、已签名 AEA1 容器或项目 JSON。",
+                hint: "Encrypted AEA profiles are unsupported; retain the unsigned source when building.",
                 exitCode: 4)
         }
     }

@@ -1,0 +1,42 @@
+{
+  "version": "0.2.0",
+  "signedFixtures": [
+    {
+      "template": "text",
+      "signedSHA256": "73aa3f695f0e9a1c5b4b68d708c9b754166aaad4160f89b3b44eb318455b297d",
+      "actionCount": 2,
+      "completeWorkflowRoundTrip": true
+    },
+    {
+      "template": "dictionary",
+      "signedSHA256": "2a2ec9eb09709a57bb431dd05655c35ca86406f8a25124148195cab3c40c15f2",
+      "actionCount": 4,
+      "completeWorkflowRoundTrip": true
+    },
+    {
+      "template": "if",
+      "signedSHA256": "a45067e4235e989f22604ade28c15b94605c82691168910573ce5ff08aaa02dc",
+      "actionCount": 8,
+      "completeWorkflowRoundTrip": true
+    },
+    {
+      "template": "repeat",
+      "signedSHA256": "e6b4f841cae499fc0a9ddfb9bd150b217d0930748b4c01490f04f5be3c543293",
+      "actionCount": 5,
+      "completeWorkflowRoundTrip": true
+    },
+    {
+      "template": "http",
+      "signedSHA256": "2ea26446d64c5a81b305c95d4ce52b5885986a409a09dd6836b561ee6e5c580e",
+      "actionCount": 5,
+      "completeWorkflowRoundTrip": true
+    }
+  ],
+  "appMetadataActions": 15,
+  "appMetadataComplete": false,
+  "observedHTTPActions": 5,
+  "listSucceeded": true,
+  "folderListingSucceeded": true,
+  "syntheticViewRequestSucceeded": true,
+  "watchInitialValidation": "validated"
+}

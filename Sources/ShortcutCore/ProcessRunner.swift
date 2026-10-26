@@ -140,6 +140,49 @@ public struct ShortcutRunner: Sendable {
         return result
     }
 
+    public func list(folder: String? = nil, folders: Bool = false, timeout: TimeInterval) throws -> Data {
+        guard !(folders && folder != nil),
+            folder.map({ !$0.isEmpty && !$0.contains("\0") && !$0.hasPrefix("-") }) ?? true
+        else {
+            throw ToolFailure(
+                "invalid_listing_options",
+                "Use a nonempty folder name or identifier, and do not combine folder filtering with folder listing.",
+                "请使用非空文件夹名称或标识符，且不能同时筛选和列出文件夹。", exitCode: 2)
+        }
+        var arguments = ["list"]
+        arguments += folders ? ["--folders"] : ["--show-identifiers"]
+        if let folder { arguments += ["--folder-name", folder] }
+        let result = try ProcessRunner.execute(executable: executable, arguments: arguments, timeout: timeout)
+        try requireSuccess(result)
+        return result.stdout
+    }
+
+    public func view(_ shortcut: String, timeout: TimeInterval) throws {
+        guard !shortcut.isEmpty, !shortcut.contains("\0") else {
+            throw ToolFailure(
+                "invalid_shortcut", "Use a nonempty shortcut name or identifier.", "请使用非空快捷指令名称或标识符。", exitCode: 2)
+        }
+        var name = shortcut
+        if let identifier = UUID(uuidString: shortcut) {
+            let entries = try ShortcutListing.parse(list(timeout: timeout))
+            if let selected = entries.first(where: { UUID(uuidString: $0.identifier) == identifier }) {
+                guard entries.filter({ $0.name == selected.name }).count == 1,
+                    !entries.contains(where: { $0.name == shortcut && UUID(uuidString: $0.identifier) != identifier })
+                else {
+                    throw ToolFailure(
+                        "ambiguous_shortcut",
+                        "Apple's editor command accepts names only; the selected identifier does not resolve to a unique name.",
+                        "Apple 编辑器命令仅接受名称；所选标识符无法解析为唯一名称。",
+                        hint: "Select the intended shortcut directly in Shortcuts.app.", exitCode: 6)
+                }
+                name = selected.name
+            }
+        }
+        let result = try ProcessRunner.execute(
+            executable: executable, arguments: ["view", "--", name], timeout: timeout)
+        try requireSuccess(result)
+    }
+
     private func requireSuccess(_ result: ProcessResult) throws {
         guard result.status == 0 else {
             let details = String(decoding: result.stderr.prefix(4096), as: UTF8.self).trimmingCharacters(

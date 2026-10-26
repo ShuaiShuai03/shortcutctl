@@ -1,5 +1,7 @@
 # Acceptance record — 2026-10-26
 
+This is the historical 0.1.0 record. See [version 0.2.0 acceptance](acceptance-0.2.0.md) for signed decoding, discovery, diff, and watch.
+
 Version: `shortcutctl 0.1.0`. Platform: Apple Silicon, macOS 27.2 (26B118), Xcode 27.0 (27A5252f), Swift 6.4, Shortcuts 10.0. These are observed local versions, not a claim that every macOS release behaves identically.
 
 ## Automated and installed-binary checks

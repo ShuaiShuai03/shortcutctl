@@ -2,7 +2,7 @@
 
 ## Layout
 
-- `Sources/ShortcutCore/`: typed values, deterministic serialization, native templates, validation, safe files, process execution, and runtime assertions.
+- `Sources/ShortcutCore/`: typed values, deterministic serialization, native templates, validation, safe files, process execution, runtime assertions, signed-container decoding, action discovery, typed diff, and watch state.
 - `Sources/shortcutctl/`: Argument Parser commands, human presentation, JSON envelopes, and exit codes.
 - `Tests/ShortcutCoreTests/`: Swift Testing unit/integration cases with synthetic process executables and temporary files.
 - `Tests/CLI/`: Python standard-library tests that execute the built CLI.
@@ -38,7 +38,7 @@ xcrun swift-format lint --strict --recursive Sources Tests/ShortcutCoreTests Pac
 
 The repository's `.swift-format` sets four-space indentation and a 120-column target. Formatter versions can differ between Xcode releases; CI gates executable behavior and coverage rather than a toolchain-specific formatting snapshot.
 
-The [CI workflow](../.github/workflows/ci.yml) verifies Apple Silicon and Intel macOS runners, unit/CLI tests, coverage, release compilation, installation into a temporary prefix, and a create/lint/build/decompile smoke flow. It uses no secrets and performs no signing, import, or successful installed-shortcut execution. The one native failure test uses a deliberately nonexistent unique name and accepts native failure or bounded timeout.
+The [CI workflow](https://github.com/ShuaiShuai03/shortcutctl/blob/main/.github/workflows/ci.yml) verifies Apple Silicon and Intel macOS runners, unit/CLI tests, coverage, release compilation, installation into a temporary prefix, and a create/lint/build/decompile smoke flow. It uses no secrets and performs no signing, import, or successful installed-shortcut execution. The one native failure test uses a deliberately nonexistent unique name and accepts native failure or bounded timeout.
 
 ## What the automated tests establish
 
@@ -51,6 +51,16 @@ The [CI workflow](../.github/workflows/ci.yml) verifies Apple Silicon and Intel 
 - Every subcommand exposes help/JSON; operational failures and report-producing failures use the documented streams.
 
 Mocked process tests establish the runner's contract, not Apple's runtime compatibility. Never count them as device acceptance.
+
+## Version 0.2.0 regression coverage
+
+The suite creates AEA archives using ephemeral P-256 keys. The certificate-chain case uses system `/usr/bin/openssl` only to generate a temporary self-signed test certificate; this is a test dependency, not a CLI runtime dependency. Private test keys and signed bytes are never committed. Both Apple-style empty-root archives and single-workflow archives are tested.
+
+Tests cover complete typed round trips, sliced `Data`, truncated/tampered/authentication-invalid archives, encrypted profiles, invalid paths, duplicate/link entries, and decompression/block-size bounds. A rejection test constructs its synthetic archive before asserting decoder failure so fixture construction errors cannot count as successful validation. A valid self-signed test certificate establishes decoding only; it does not establish certificate trust.
+
+Diff regressions cover typed values, signed zero, Unicode key representation, escaped paths, tests, ordered arrays, JSON output, human before/after values, and the optional exit-8 gate. Watch executable tests cover initial output safety, dry runs, invalid-input recovery, atomic saves, strict validation, directory-alias retargeting, and refusal to replace external output edits. Native list/view runner tests assert literal argument arrays, native failures, and option validation; CLI view testing uses dry-run rather than opening personal shortcuts.
+
+CI packages both architecture-specific release builds with documentation, licenses, and checksums after the installed executable contract suite passes. Packaging does not imply notarization or native signing/import acceptance.
 
 ## Native acceptance procedure
 
@@ -76,4 +86,4 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory examples/http-server
 
 The HTTP template requests only `http://127.0.0.1:8765/fixture.json`. Stop that server when finished. Review any permission prompt rather than changing global security settings. Keep JSON test reports and inspected screenshots in ignored `local-artifacts/`; signed containers may contain account-associated metadata and are not committed.
 
-A native acceptance report must identify the OS/toolchain, fixture version, signing/import checks, actual assertions, and limitations. The completed local run is recorded in [acceptance.md](acceptance.md). Physical-iPhone and Health results require separate device evidence.
+A native acceptance report must identify the OS/toolchain, fixture version, signing/import checks, actual assertions, and limitations. The original local run is recorded in [acceptance.md](acceptance.md); new signed decoding/discovery/diff/watch evidence is in [acceptance-0.2.0.md](acceptance-0.2.0.md). Physical-iPhone and Health results require separate device evidence.

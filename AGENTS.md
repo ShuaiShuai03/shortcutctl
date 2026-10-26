@@ -16,6 +16,6 @@ Write focused regression tests for reproducible failures. Use synthetic workflow
 
 Preserve unknown workflow actions, parameters, and property-list types. Reject unrepresentable data explicitly. Do not conflate valid JSON, valid workflow structure, successful signing, successful import, and successful execution.
 
-Do not access the private Shortcuts database. The native serialized workflow format is experimental; Apple CLI signing/running are supported interfaces. Signed-container decoding, device automation management, and Health execution must not be claimed without evidence. See `docs/architecture.md`.
+Do not access the private Shortcuts database. The native serialized workflow format is experimental; Apple CLI signing/running are supported interfaces. Signed-container decoding must distinguish embedded-key archive integrity from certificate trust and shortcut safety. Preserve the bounded, non-extracting AppleArchive path and its synthetic regression tests. Device automation management and Health execution must not be claimed without evidence. See `docs/architecture.md`.
 
 Use direct process argument arrays, bounded waits, stable JSON/error contracts, and no-overwrite output defaults. Keep English source comments and documentation; Chinese is an explicitly requested diagnostic locale. Do not commit credentials, private shortcut content, or machine-specific paths.

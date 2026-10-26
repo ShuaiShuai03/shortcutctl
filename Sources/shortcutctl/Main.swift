@@ -10,8 +10,11 @@ struct ShortcutCTL: ParsableCommand {
         abstract: "Develop, inspect, validate, and test Apple Shortcuts from versioned JSON.",
         discussion:
             "Workflow serialization is experimental. Signing, importing, and execution are distinct steps. No private Shortcuts database access is used.",
-        version: "0.1.0",
-        subcommands: [Create.self, Build.self, Inspect.self, Decompile.self, Lint.self, Run.self, Test.self]
+        version: "0.2.0",
+        subcommands: [
+            Create.self, Build.self, Inspect.self, Decompile.self, Lint.self, Run.self, Test.self, Discover.self,
+            List.self, View.self, Diff.self, Watch.self,
+        ]
     )
 
     static func main() {
@@ -43,7 +46,10 @@ struct ShortcutCTL: ParsableCommand {
                     arguments[$0] == "--language" && arguments.indices.contains($0 + 1) && arguments[$0 + 1] == "zh"
                 }
             if wantsJSON {
-                let commands = ["create", "build", "inspect", "decompile", "lint", "run", "test"]
+                let commands = [
+                    "create", "build", "inspect", "decompile", "lint", "run", "test", "discover", "list", "view",
+                    "diff", "watch",
+                ]
                 let envelope = FailureEnvelope(
                     command: arguments.first(where: commands.contains) ?? "shortcutctl", error: failure)
                 if let data = try? OutputOptions.encoder.encode(envelope) {
