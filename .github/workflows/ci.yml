@@ -42,6 +42,32 @@ jobs:
           "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" lint "$RUNNER_TEMP/ci-project.json" --strict --json
           "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" build "$RUNNER_TEMP/ci-project.json" --output "$RUNNER_TEMP/ci-workflow.shortcut" --format binary --json
           "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" decompile "$RUNNER_TEMP/ci-workflow.shortcut" --json
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" discover --query gettext --json
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" diff "$RUNNER_TEMP/ci-project.json" "$RUNNER_TEMP/ci-workflow.shortcut" --workflow-only --check --json
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" watch "$RUNNER_TEMP/ci-project.json" --once --json
+          SHORTCUTCTL_BIN="$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" python3 -m unittest discover -s Tests/CLI -v
+      - name: Package verified executable and licenses
+        run: |
+          version=$("$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" --version)
+          package="shortcutctl-${version}-macos-$(uname -m)"
+          mkdir -p "$RUNNER_TEMP/release/$package/bin"
+          install -m 755 "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" "$RUNNER_TEMP/release/$package/bin/shortcutctl"
+          cp LICENSE THIRD_PARTY_NOTICES.md README.md CHANGELOG.md AGENTS.md "$RUNNER_TEMP/release/$package/"
+          cp -R LICENSES docs examples "$RUNNER_TEMP/release/$package/"
+          python3 -c 'import json, platform, sys; print(json.dumps({"version": sys.argv[1], "sourceCommit": sys.argv[2], "architecture": platform.machine()}, indent=2))' "$version" "$GITHUB_SHA" > "$RUNNER_TEMP/release/$package/BUILD-INFO.json"
+          tar -czf "$RUNNER_TEMP/release/$package.tar.gz" -C "$RUNNER_TEMP/release" "$package"
+          cd "$RUNNER_TEMP/release"
+          shasum -a 256 "$package.tar.gz" > "$package.tar.gz.sha256"
+          shasum -a 256 -c "$package.tar.gz.sha256"
+      - name: Release candidate artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-${{ matrix.runner }}
+          path: |
+            ${{ runner.temp }}/release/*.tar.gz
+            ${{ runner.temp }}/release/*.sha256
+          if-no-files-found: error
+          retention-days: 14
       - name: Coverage report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -17,9 +17,13 @@ struct OutputOptions: ParsableArguments {
         return encoder
     }
 
-    func emit<T: Encodable>(_ data: T, command: String, ok: Bool = true, text: String, chinese: String? = nil) throws {
+    func emit<T: Encodable>(
+        _ data: T, command: String, ok: Bool = true, text: String, chinese: String? = nil, stream: Bool = false
+    ) throws {
         if json {
-            let result = try Self.encoder.encode(SuccessEnvelope(command: command, ok: ok, data: data))
+            let encoder = Self.encoder
+            if stream { encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes] }
+            let result = try encoder.encode(SuccessEnvelope(command: command, ok: ok, data: data))
             FileHandle.standardOutput.write(result + Data([10]))
         } else {
             print(language == .zh ? (chinese ?? text) : text)

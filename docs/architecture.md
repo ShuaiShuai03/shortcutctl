@@ -2,7 +2,7 @@
 
 ## Scope
 
-The first release implements `create`, `build`, `inspect`, `decompile`, `lint`, `run`, and `test`. The supplied product proposal defines these as the MVP. Discovery, semantic diff, watch mode, automation planning, and a Health action catalog are later priorities; they must not be presented as functioning device-management APIs.
+Version 0.2.0 extends the original `create`, `build`, `inspect`, `decompile`, `lint`, `run`, and `test` commands with signed-container decoding, `discover`, `list`, `view`, typed structural `diff`, and foreground `watch`. Automation planning, a complete installed-action catalog, and Health execution remain outside this release; discovery is not a device-management API.
 
 ## Decisions
 
@@ -38,7 +38,13 @@ Read-only smoke checks of `shortcuts list --show-identifiers` and `shortcuts lis
 
 Apple documents listing, running, viewing and signing. Apple does not promise stability of the serialized `WFWorkflow*` action graph format used by third-party compilers. The compiler's native format compatibility is therefore experimental and fixture-tested, not an Apple public editing API.
 
-Signed archives are distinct from unsigned XML/binary property lists. Recognizing a signed container must never be represented as signature validation, and an unreadable container must never silently produce an empty workflow. Initial decoding supports unsigned property lists and project JSON only; signed files receive an explicit limitation diagnostic.
+Signed archives are distinct from unsigned XML/binary property lists. Recognizing a signed container must never be represented as signature validation, and an unreadable container must never silently produce an empty workflow. Decoding supports unsigned property lists, project JSON, and signed, unencrypted AEA1 profile 0 containers. The signed decoder uses public AppleArchive streams, CryptoKit P-256 keys, and Security certificate parsing. It authenticates the entire archive against an embedded key before parsing its single native workflow entry. It does not validate certificate-chain trust, contact identity, or Apple approval. Encrypted profiles are explicitly rejected.
+
+The decoder accepts exactly one regular `Shortcut.wflow`, optionally preceded by Apple's empty root-directory entry. Archive paths are never extracted. Input and workflow payloads are limited to 16 MiB; the decoded Apple Archive stream and its compression block are limited to 17 MiB, allowing bounded header overhead. Temporary byte streams are closed automatically. Tests generate ephemeral signing keys and synthetic archives; no account-associated signed container is committed.
+
+Discovery separates the small compatibility registry, parameter keys observed in a chosen workflow, and App Intents metadata read from an explicit file/app bundle. Unknown metadata is retained as raw JSON. None of these sources establishes action availability, complete parameter schemas, or permission to run an action. The metadata format is experimental. Discovery does not extend the validator's compatibility registry implicitly.
+
+Diff compares typed values rather than serialized bytes. Dictionary keys use UTF-8 identity, arrays retain their order and compare by index, and UUIDs/unknown metadata remain visible. It does not infer behavioral equivalence or align moved actions. Project name/tests can be excluded explicitly. Watch polls source bytes, debounces changes, validates each new snapshot, and optionally publishes unsigned compilation atomically. It fixes the output parent at startup, rechecks source/output separation, and refuses externally changed output unless replacement was explicitly authorized. It never invokes signing, import, or workflow execution.
 
 App Intents lets an application expose its own actions to system surfaces. It is not a general API for rewriting another application's shortcut graphs. iPhone automation triggers and Health access remain device-controlled; this CLI does not bypass consent or promise remote deployment.
 
