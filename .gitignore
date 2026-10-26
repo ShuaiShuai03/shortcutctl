@@ -1,0 +1,25 @@
+# macOS metadata
+.DS_Store
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build and test outputs
+.build/
+.swiftpm/
+build/
+dist/
+coverage/
+
+# Private shortcut files and local integration evidence
+*.shortcut
+local-artifacts/
+
+# Editor state
+.idea/
+.vscode/
+*.swp
