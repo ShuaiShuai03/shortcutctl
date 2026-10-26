@@ -1,0 +1,94 @@
+{
+  "name" : "shortcutctl Example Repeat",
+  "schemaVersion" : 1,
+  "tests" : [
+    {
+      "expectedOutput" : "item\nitem\nitem",
+      "name" : "repeat-three"
+    }
+  ],
+  "workflow" : {
+    "WFWorkflowActions" : [
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.repeat.count",
+        "WFWorkflowActionParameters" : {
+          "GroupingIdentifier" : "1B193683-0132-58ED-8AFC-82390729CB75",
+          "UUID" : "8F03AC02-53C4-54E2-A5CC-9F444858FE3F",
+          "WFControlFlowMode" : 0,
+          "WFRepeatCount" : 3
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.gettext",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "14A76A76-A087-5B94-ACED-29D44F6AA551",
+          "WFTextActionText" : "item"
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.repeat.count",
+        "WFWorkflowActionParameters" : {
+          "GroupingIdentifier" : "1B193683-0132-58ED-8AFC-82390729CB75",
+          "UUID" : "52C81709-D114-5D00-981F-1A59B6F087E6",
+          "WFControlFlowMode" : 2
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.text.combine",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "5048F4C9-B538-5585-BA46-5636660AD179",
+          "WFTextSeparator" : "New Lines",
+          "text" : {
+            "Value" : {
+              "OutputName" : "Result",
+              "OutputUUID" : "52C81709-D114-5D00-981F-1A59B6F087E6",
+              "Type" : "ActionOutput"
+            },
+            "WFSerializationType" : "WFTextTokenAttachment"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.output",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "BE813A18-6FDA-5B13-A4FC-A04C02BE9AF4",
+          "WFOutput" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "5048F4C9-B538-5585-BA46-5636660AD179",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      }
+    ],
+    "WFWorkflowClientVersion" : "4018.0.4",
+    "WFWorkflowHasOutputFallback" : false,
+    "WFWorkflowHasShortcutInputVariables" : false,
+    "WFWorkflowIcon" : {
+      "WFWorkflowIconGlyphNumber" : 59511,
+      "WFWorkflowIconStartColor" : 4282601983
+    },
+    "WFWorkflowImportQuestions" : [
+
+    ],
+    "WFWorkflowInputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowMinimumClientVersion" : 900,
+    "WFWorkflowMinimumClientVersionString" : "900",
+    "WFWorkflowName" : "shortcutctl Example Repeat",
+    "WFWorkflowOutputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowTypes" : [
+
+    ]
+  }
+}

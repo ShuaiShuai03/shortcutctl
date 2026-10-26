@@ -14,6 +14,10 @@
 build/
 dist/
 coverage/
+__pycache__/
+*.pyc
+*.profraw
+*.profdata
 
 # Private shortcut files and local integration evidence
 *.shortcut

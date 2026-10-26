@@ -1,0 +1,111 @@
+{
+  "name" : "shortcutctl Example Http",
+  "schemaVersion" : 1,
+  "tests" : [
+    {
+      "expectedOutput" : "HTTP passed",
+      "name" : "http-json"
+    }
+  ],
+  "workflow" : {
+    "WFWorkflowActions" : [
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.url",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "6C80F393-87B8-5816-934C-185DD0618C2C",
+          "WFURLActionURL" : "http://127.0.0.1:8765/fixture.json"
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.downloadurl",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "EA03FCB6-58E0-5D7D-97EB-9E98230CC26E",
+          "WFHTTPMethod" : "GET",
+          "WFURL" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "6C80F393-87B8-5816-934C-185DD0618C2C",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.detect.dictionary",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "FDB29C34-FEC0-5590-AE29-95A962909CF5",
+          "WFInput" : {
+            "Value" : {
+              "OutputName" : "Result",
+              "OutputUUID" : "EA03FCB6-58E0-5D7D-97EB-9E98230CC26E",
+              "Type" : "ActionOutput"
+            },
+            "WFSerializationType" : "WFTextTokenAttachment"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.getvalueforkey",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "F6F0974B-AFC7-5B5F-BDAD-B498D8FF368E",
+          "WFDictionaryKey" : "message",
+          "WFInput" : {
+            "Value" : {
+              "OutputName" : "Result",
+              "OutputUUID" : "FDB29C34-FEC0-5590-AE29-95A962909CF5",
+              "Type" : "ActionOutput"
+            },
+            "WFSerializationType" : "WFTextTokenAttachment"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.output",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "5365BD06-85AA-5A80-BD7D-85238A3869C7",
+          "WFOutput" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "F6F0974B-AFC7-5B5F-BDAD-B498D8FF368E",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      }
+    ],
+    "WFWorkflowClientVersion" : "4018.0.4",
+    "WFWorkflowHasOutputFallback" : false,
+    "WFWorkflowHasShortcutInputVariables" : false,
+    "WFWorkflowIcon" : {
+      "WFWorkflowIconGlyphNumber" : 59511,
+      "WFWorkflowIconStartColor" : 4282601983
+    },
+    "WFWorkflowImportQuestions" : [
+
+    ],
+    "WFWorkflowInputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowMinimumClientVersion" : 900,
+    "WFWorkflowMinimumClientVersionString" : "900",
+    "WFWorkflowName" : "shortcutctl Example Http",
+    "WFWorkflowOutputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowTypes" : [
+
+    ]
+  }
+}

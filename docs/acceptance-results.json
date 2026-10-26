@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-26",
+  "version": "0.1.0",
+  "platform": {
+    "macOS": "27.2",
+    "architecture": "arm64",
+    "swift": "6.4",
+    "shortcuts": "10.0"
+  },
+  "execution": "Installed release executable; real imported synthetic shortcuts",
+  "results": [
+    {
+      "template": "text",
+      "sourceSHA256": "d7c413d45f9b61988a381158b1b4647fb8dd5dee68de1aeae173e4dbf8780b47",
+      "signedArtifactSHA256": "73aa3f695f0e9a1c5b4b68d708c9b754166aaad4160f89b3b44eb318455b297d",
+      "report": {
+        "command": "test",
+        "data": {
+          "cases": [
+            {
+              "actualOutput": "Hello from shortcutctl",
+              "expectedOutput": "Hello from shortcutctl",
+              "name": "echo",
+              "passed": true
+            },
+            {
+              "actualOutput": "Hello 世界 🧪",
+              "expectedOutput": "Hello 世界 🧪",
+              "name": "unicode",
+              "passed": true
+            }
+          ],
+          "dryRun": false,
+          "executed": true,
+          "halted": false,
+          "passed": true,
+          "plannedCount": 2,
+          "shortcut": "shortcutctl Verify Text 20261026"
+        },
+        "ok": true,
+        "schemaVersion": 1
+      }
+    },
+    {
+      "template": "dictionary",
+      "sourceSHA256": "347c095d1e84c49e2cbe5fcb89b7313ca45b924c49e8c682c4219717e71b5d11",
+      "signedArtifactSHA256": "2a2ec9eb09709a57bb431dd05655c35ca86406f8a25124148195cab3c40c15f2",
+      "report": {
+        "command": "test",
+        "data": {
+          "cases": [
+            {
+              "actualOutput": "Dictionary passed",
+              "expectedOutput": "Dictionary passed",
+              "name": "dictionary-variable",
+              "passed": true
+            }
+          ],
+          "dryRun": false,
+          "executed": true,
+          "halted": false,
+          "passed": true,
+          "plannedCount": 1,
+          "shortcut": "shortcutctl Verify Dictionary 20261026"
+        },
+        "ok": true,
+        "schemaVersion": 1
+      }
+    },
+    {
+      "template": "if",
+      "sourceSHA256": "0856bbd34ac41eb97aef14027ce04ae28c752960f5053df34c7752bd6017475f",
+      "signedArtifactSHA256": "a45067e4235e989f22604ade28c15b94605c82691168910573ce5ff08aaa02dc",
+      "report": {
+        "command": "test",
+        "data": {
+          "cases": [
+            {
+              "actualOutput": "matched",
+              "expectedOutput": "matched",
+              "name": "true-branch",
+              "passed": true
+            },
+            {
+              "actualOutput": "not matched",
+              "expectedOutput": "not matched",
+              "name": "false-branch",
+              "passed": true
+            }
+          ],
+          "dryRun": false,
+          "executed": true,
+          "halted": false,
+          "passed": true,
+          "plannedCount": 2,
+          "shortcut": "shortcutctl Verify If 20261026 v3"
+        },
+        "ok": true,
+        "schemaVersion": 1
+      }
+    },
+    {
+      "template": "repeat",
+      "sourceSHA256": "0590fb9bc0dad3cd730cdaa7c14077a8b11b0020229433b9ac0d4c131772e185",
+      "signedArtifactSHA256": "e6b4f841cae499fc0a9ddfb9bd150b217d0930748b4c01490f04f5be3c543293",
+      "report": {
+        "command": "test",
+        "data": {
+          "cases": [
+            {
+              "actualOutput": "item\nitem\nitem",
+              "expectedOutput": "item\nitem\nitem",
+              "name": "repeat-three",
+              "passed": true
+            }
+          ],
+          "dryRun": false,
+          "executed": true,
+          "halted": false,
+          "passed": true,
+          "plannedCount": 1,
+          "shortcut": "shortcutctl Verify Repeat 20261026 v2"
+        },
+        "ok": true,
+        "schemaVersion": 1
+      }
+    },
+    {
+      "template": "http",
+      "sourceSHA256": "dbc8e13b12d2b0ff5745129edc530638219fa6b0fe75149d321c7b739d47bc1d",
+      "signedArtifactSHA256": "2ea26446d64c5a81b305c95d4ce52b5885986a409a09dd6836b561ee6e5c580e",
+      "report": {
+        "command": "test",
+        "data": {
+          "cases": [
+            {
+              "actualOutput": "HTTP passed",
+              "expectedOutput": "HTTP passed",
+              "name": "http-json",
+              "passed": true
+            }
+          ],
+          "dryRun": false,
+          "executed": true,
+          "halted": false,
+          "passed": true,
+          "plannedCount": 1,
+          "shortcut": "shortcutctl Verify Http 20261026"
+        },
+        "ok": true,
+        "schemaVersion": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Toolchain
+        run: |
+          swift --version
+          sw_vers
+          uname -m
+      - name: Unit and CLI contracts with coverage
+        run: python3 scripts/check-coverage.py
+      - name: Release build and installation smoke check
+        run: |
+          swift build -c release
+          install -d "$RUNNER_TEMP/shortcutctl-install/bin"
+          install -m 755 "$(swift build -c release --show-bin-path)/shortcutctl" "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl"
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" --version
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" create "$RUNNER_TEMP/ci-project.json" --template dictionary --json
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" lint "$RUNNER_TEMP/ci-project.json" --strict --json
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" build "$RUNNER_TEMP/ci-project.json" --output "$RUNNER_TEMP/ci-workflow.shortcut" --format binary --json
+          "$RUNNER_TEMP/shortcutctl-install/bin/shortcutctl" decompile "$RUNNER_TEMP/ci-workflow.shortcut" --json
+      - name: Coverage report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: coverage-${{ matrix.runner }}
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 7

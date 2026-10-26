@@ -1,0 +1,118 @@
+{
+  "name" : "shortcutctl Example Dictionary",
+  "schemaVersion" : 1,
+  "tests" : [
+    {
+      "expectedOutput" : "Dictionary passed",
+      "name" : "dictionary-variable"
+    }
+  ],
+  "workflow" : {
+    "WFWorkflowActions" : [
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.dictionary",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "BD914030-3042-555C-8B1B-0BA1A5CE78CC",
+          "WFItems" : {
+            "Value" : {
+              "WFDictionaryFieldValueItems" : [
+                {
+                  "WFItemType" : 0,
+                  "WFKey" : {
+                    "Value" : {
+                      "attachmentsByRange" : {
+
+                      },
+                      "string" : "message"
+                    },
+                    "WFSerializationType" : "WFTextTokenString"
+                  },
+                  "WFValue" : {
+                    "Value" : {
+                      "attachmentsByRange" : {
+
+                      },
+                      "string" : "Dictionary passed"
+                    },
+                    "WFSerializationType" : "WFTextTokenString"
+                  }
+                }
+              ]
+            },
+            "WFSerializationType" : "WFDictionaryFieldValue"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.setvariable",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "BBBDD972-D01B-5655-8879-E73DEB3E08E1",
+          "WFInput" : {
+            "Value" : {
+              "OutputName" : "Result",
+              "OutputUUID" : "BD914030-3042-555C-8B1B-0BA1A5CE78CC",
+              "Type" : "ActionOutput"
+            },
+            "WFSerializationType" : "WFTextTokenAttachment"
+          },
+          "WFVariableName" : "payload"
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.getvalueforkey",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "CD80F9CA-4209-588C-B673-315E89CEE560",
+          "WFDictionaryKey" : "message",
+          "WFInput" : {
+            "Value" : {
+              "Type" : "Variable",
+              "VariableName" : "payload"
+            },
+            "WFSerializationType" : "WFTextTokenAttachment"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.output",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "422752A3-8C04-5E8C-BD1D-DF961A50E9CD",
+          "WFOutput" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "CD80F9CA-4209-588C-B673-315E89CEE560",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      }
+    ],
+    "WFWorkflowClientVersion" : "4018.0.4",
+    "WFWorkflowHasOutputFallback" : false,
+    "WFWorkflowHasShortcutInputVariables" : false,
+    "WFWorkflowIcon" : {
+      "WFWorkflowIconGlyphNumber" : 59511,
+      "WFWorkflowIconStartColor" : 4282601983
+    },
+    "WFWorkflowImportQuestions" : [
+
+    ],
+    "WFWorkflowInputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowMinimumClientVersion" : 900,
+    "WFWorkflowMinimumClientVersionString" : "900",
+    "WFWorkflowName" : "shortcutctl Example Dictionary",
+    "WFWorkflowOutputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowTypes" : [
+
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name" : "shortcutctl Example Text",
+  "schemaVersion" : 1,
+  "tests" : [
+    {
+      "expectedOutput" : "Hello from shortcutctl",
+      "input" : "Hello from shortcutctl",
+      "name" : "echo"
+    },
+    {
+      "expectedOutput" : "Hello 世界 🧪",
+      "input" : "Hello 世界 🧪",
+      "name" : "unicode"
+    }
+  ],
+  "workflow" : {
+    "WFWorkflowActions" : [
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.gettext",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "294ABC90-9D9F-541D-AF51-0978B377B33E",
+          "WFTextActionText" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "Type" : "ExtensionInput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.output",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "5AC41FBC-32CF-534B-B539-22C33FAAC68B",
+          "WFOutput" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "294ABC90-9D9F-541D-AF51-0978B377B33E",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      }
+    ],
+    "WFWorkflowClientVersion" : "4018.0.4",
+    "WFWorkflowHasOutputFallback" : false,
+    "WFWorkflowHasShortcutInputVariables" : true,
+    "WFWorkflowIcon" : {
+      "WFWorkflowIconGlyphNumber" : 59511,
+      "WFWorkflowIconStartColor" : 4282601983
+    },
+    "WFWorkflowImportQuestions" : [
+
+    ],
+    "WFWorkflowInputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowMinimumClientVersion" : 900,
+    "WFWorkflowMinimumClientVersionString" : "900",
+    "WFWorkflowName" : "shortcutctl Example Text",
+    "WFWorkflowOutputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowTypes" : [
+
+    ]
+  }
+}

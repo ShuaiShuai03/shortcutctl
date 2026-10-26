@@ -1,0 +1,148 @@
+{
+  "name" : "shortcutctl Example If",
+  "schemaVersion" : 1,
+  "tests" : [
+    {
+      "expectedOutput" : "matched",
+      "input" : "yes",
+      "name" : "true-branch"
+    },
+    {
+      "expectedOutput" : "not matched",
+      "input" : "no",
+      "name" : "false-branch"
+    }
+  ],
+  "workflow" : {
+    "WFWorkflowActions" : [
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.gettext",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "2121FC39-4978-5B3C-8467-2DC728C4B9EF",
+          "WFTextActionText" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "Type" : "ExtensionInput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.conditional",
+        "WFWorkflowActionParameters" : {
+          "GroupingIdentifier" : "96215F91-4098-51D1-A336-D6C002887D99",
+          "UUID" : "932A185B-F981-565B-84AD-60B02E769B67",
+          "WFCondition" : 4,
+          "WFConditionalActionString" : "yes",
+          "WFControlFlowMode" : 0,
+          "WFInput" : {
+            "Type" : "Variable",
+            "Variable" : {
+              "Value" : {
+                "OutputName" : "Result",
+                "OutputUUID" : "2121FC39-4978-5B3C-8467-2DC728C4B9EF",
+                "Type" : "ActionOutput"
+              },
+              "WFSerializationType" : "WFTextTokenAttachment"
+            }
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.gettext",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "B942EA6D-6128-54A1-9476-568F72456A61",
+          "WFTextActionText" : "matched"
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.output",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "68C66FE5-0EF3-5394-BB57-A6B7D0628869",
+          "WFOutput" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "B942EA6D-6128-54A1-9476-568F72456A61",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.conditional",
+        "WFWorkflowActionParameters" : {
+          "GroupingIdentifier" : "96215F91-4098-51D1-A336-D6C002887D99",
+          "UUID" : "B1386C93-A0C9-5EA4-8965-EB61473D62B4",
+          "WFControlFlowMode" : 1
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.gettext",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "566AF718-6D65-5E8F-91B9-DD8B3B4A35FA",
+          "WFTextActionText" : "not matched"
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.output",
+        "WFWorkflowActionParameters" : {
+          "UUID" : "EC667CED-120A-59CD-87E5-3D1AA6BDB26F",
+          "WFOutput" : {
+            "Value" : {
+              "attachmentsByRange" : {
+                "{0, 1}" : {
+                  "OutputName" : "Result",
+                  "OutputUUID" : "566AF718-6D65-5E8F-91B9-DD8B3B4A35FA",
+                  "Type" : "ActionOutput"
+                }
+              },
+              "string" : "￼"
+            },
+            "WFSerializationType" : "WFTextTokenString"
+          }
+        }
+      },
+      {
+        "WFWorkflowActionIdentifier" : "is.workflow.actions.conditional",
+        "WFWorkflowActionParameters" : {
+          "GroupingIdentifier" : "96215F91-4098-51D1-A336-D6C002887D99",
+          "UUID" : "49BF3FEB-2DA1-5F00-816C-5570AB5E5095",
+          "WFControlFlowMode" : 2
+        }
+      }
+    ],
+    "WFWorkflowClientVersion" : "4018.0.4",
+    "WFWorkflowHasOutputFallback" : false,
+    "WFWorkflowHasShortcutInputVariables" : true,
+    "WFWorkflowIcon" : {
+      "WFWorkflowIconGlyphNumber" : 59511,
+      "WFWorkflowIconStartColor" : 4282601983
+    },
+    "WFWorkflowImportQuestions" : [
+
+    ],
+    "WFWorkflowInputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowMinimumClientVersion" : 900,
+    "WFWorkflowMinimumClientVersionString" : "900",
+    "WFWorkflowName" : "shortcutctl Example If",
+    "WFWorkflowOutputContentItemClasses" : [
+      "WFStringContentItem"
+    ],
+    "WFWorkflowTypes" : [
+
+    ]
+  }
+}
